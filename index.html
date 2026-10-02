@@ -11,12 +11,17 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #111;
     color: #fff;
     min-height: 100vh;
+    padding-bottom: 100px;
 }
 
 .container {
@@ -38,7 +43,7 @@ h1 {
 }
 
 
-/* CONTADOR FIJO */
+/* CONTADOR STICKY */
 
 .sticky-counter {
     position: sticky;
@@ -75,32 +80,92 @@ h1 {
     border: 1px solid #292929;
 }
 
-#counter {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-#counterMessage {
-    color: #aaa;
-    font-size: 15px;
-}
-
 .rating-summary {
-    margin-top: 10px;
     color: #aaa;
     font-size: 14px;
 }
 
 
-/* BOTONES */
+/* BOTÓN NUEVO SÁBADO */
 
-.controls {
+.new-saturday-button {
+    margin-top: 14px;
+}
+
+
+/* BARRA INFERIOR */
+
+.bottom-bar {
+    position: fixed;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: min(700px, calc(100% - 24px));
+    z-index: 500;
+
+    background: rgba(28, 28, 28, 0.96);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid #3a3a3a;
+    border-radius: 16px;
+
+    padding: 10px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+.bottom-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
+    gap: 8px;
+    align-items: center;
+}
+
+.mode-switch {
+    display: flex;
+    flex: 1;
+    background: #111;
+    border-radius: 10px;
+    padding: 3px;
+    border: 1px solid #333;
+}
+
+.mode-button {
+    flex: 1;
+    background: transparent;
+    color: #aaa;
+    padding: 10px 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+}
+
+.mode-button.active {
+    background: #293d50;
+    color: white;
+}
+
+.bottom-action {
+    white-space: nowrap;
+}
+
+.btn-main {
+    background: #1f8f4d;
+    color: white;
+}
+
+.btn-gray {
+    background: #333;
+    color: white;
+}
+
+.btn-blue {
+    background: #2864d7;
+    color: white;
+}
+
+.btn-red {
+    background: #b83232;
+    color: white;
 }
 
 button {
@@ -121,63 +186,6 @@ button:hover:not(:disabled) {
 button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-}
-
-.btn-main {
-    background: #1f8f4d;
-    color: white;
-}
-
-.btn-blue {
-    background: #2864d7;
-    color: white;
-}
-
-.btn-gray {
-    background: #333;
-    color: white;
-}
-
-.btn-red {
-    background: #b83232;
-    color: white;
-}
-
-
-/* MODOS */
-
-.mode-box {
-    background: #1c1c1c;
-    border: 1px solid #292929;
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.mode-title {
-    font-weight: bold;
-    margin-bottom: 12px;
-    font-size: 18px;
-}
-
-.mode-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.mode-button {
-    background: #292929;
-    color: #ddd;
-    border: 2px solid transparent;
-}
-
-.mode-button.active {
-    border-color: #42a5f5;
-    background: #202f3d;
-    color: white;
 }
 
 
@@ -282,11 +290,40 @@ button:disabled {
 
 /* EQUIPOS */
 
+.teams-section {
+    margin-top: 25px;
+    scroll-margin-top: 70px;
+}
+
+.teams-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.teams-title {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.team-tools {
+    display: flex;
+    gap: 7px;
+}
+
+.small-button {
+    padding: 9px 11px;
+    font-size: 13px;
+    background: #333;
+    color: white;
+}
+
 .teams {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
-    margin-top: 25px;
 }
 
 .team {
@@ -387,6 +424,21 @@ button:disabled {
 }
 
 
+/* MENSAJE */
+
+.warning {
+    background: #432525;
+    border: 1px solid #733737;
+    color: #ffb5b5;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    display: none;
+}
+
+
 /* MODAL */
 
 .modal {
@@ -449,21 +501,6 @@ button:disabled {
 }
 
 
-/* MENSAJE */
-
-.warning {
-    background: #432525;
-    border: 1px solid #733737;
-    color: #ffb5b5;
-    border-radius: 10px;
-    padding: 12px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    text-align: center;
-    display: none;
-}
-
-
 /* MOBILE */
 
 @media (max-width: 750px) {
@@ -472,14 +509,31 @@ button:disabled {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .teams,
-    .last-teams {
+    .teams {
         grid-template-columns: 1fr;
     }
 
     h1 {
         font-size: 27px;
     }
+
+    .bottom-row {
+        flex-wrap: wrap;
+    }
+
+    .mode-switch {
+        width: 100%;
+        flex: none;
+    }
+
+    .bottom-action {
+        flex: 1;
+    }
+
+    .bottom-action button {
+        width: 100%;
+    }
+
 }
 
 
@@ -493,16 +547,38 @@ button:disabled {
         flex-direction: column;
     }
 
-    .controls {
+    .player {
+        min-height: 48px;
+    }
+
+    .teams-header {
+        align-items: stretch;
         flex-direction: column;
     }
 
-    .controls button {
+    .team-tools {
         width: 100%;
     }
 
-    .player {
-        min-height: 48px;
+    .team-tools button {
+        flex: 1;
+    }
+
+    .bottom-bar {
+        bottom: 8px;
+        width: calc(100% - 16px);
+    }
+
+    .bottom-row {
+        gap: 6px;
+    }
+
+    .bottom-action {
+        font-size: 13px;
+    }
+
+    .bottom-action button {
+        padding: 11px 8px;
     }
 
 }
@@ -528,15 +604,15 @@ button:disabled {
         ">
             By Kevin
         </span>
-
     </h1>
+
 
     <div class="subtitle">
         Armá los equipos y no me rompas los huevubis
     </div>
 
 
-    <!-- CONTADOR FIJO -->
+    <!-- CONTADOR ÚNICO -->
 
     <div class="sticky-counter">
 
@@ -555,82 +631,13 @@ button:disabled {
 
     <div class="top-info">
 
-        <div id="counter">
-            0 / 12
-        </div>
-
-        <div id="counterMessage">
-            Seleccioná 12 jugadores
-        </div>
-
         <div
             class="rating-summary"
             id="ratingSummary">
         </div>
 
-    </div>
-
-
-    <!-- MODO -->
-
-    <div class="mode-box">
-
-        <div class="mode-title">
-            Modo de armado
-        </div>
-
-        <div class="mode-buttons">
-
-            <button
-                id="randomMode"
-                class="mode-button active"
-                onclick="setMode('random')">
-
-                🎲 Aleatorio
-
-            </button>
-
-
-            <button
-                id="balancedMode"
-                class="mode-button"
-                onclick="setMode('balanced')">
-
-                ⚖️ Equilibrado
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- CONTROLES -->
-
-    <div class="controls">
-
         <button
-            class="btn-main"
-            id="generateButton"
-            onclick="generateTeams()"
-            disabled>
-
-            ⚽ Armar equipos
-
-        </button>
-
-
-        <button
-            class="btn-gray"
-            onclick="clearSelection()">
-
-            ⬜ Limpiar selección
-
-        </button>
-
-
-        <button
-            class="btn-gray"
+            class="btn-gray new-saturday-button"
             onclick="newSaturday()">
 
             🔄 Nuevo sábado
@@ -687,8 +694,46 @@ button:disabled {
     <!-- EQUIPOS -->
 
     <div
-        class="teams"
-        id="teamsContainer">
+        class="teams-section"
+        id="teamsSection">
+
+        <div class="teams-header">
+
+            <div class="teams-title">
+                ⚽ Equipos
+            </div>
+
+            <div
+                class="team-tools"
+                id="teamTools"
+                style="display:none;">
+
+                <button
+                    class="small-button"
+                    onclick="copyTeams()">
+
+                    📋 Copiar
+
+                </button>
+
+                <button
+                    class="small-button"
+                    onclick="shareTeamsAsImage()">
+
+                    📸 Imagen
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="teams"
+            id="teamsContainer">
+        </div>
+
     </div>
 
 
@@ -710,6 +755,70 @@ button:disabled {
 
     </div>
 
+
+</div>
+
+
+<!-- BARRA INFERIOR -->
+
+<div class="bottom-bar">
+
+    <div class="bottom-row">
+
+
+        <div class="mode-switch">
+
+            <button
+                id="randomMode"
+                class="mode-button active"
+                onclick="setMode('random')">
+
+                🎲 Aleatorio
+
+            </button>
+
+
+            <button
+                id="balancedMode"
+                class="mode-button"
+                onclick="setMode('balanced')">
+
+                ⚖️ Equilibrado
+
+            </button>
+
+        </div>
+
+
+        <div class="bottom-action">
+
+            <button
+                class="btn-gray"
+                onclick="clearSelection()">
+
+                🧹 Limpiar
+
+            </button>
+
+        </div>
+
+
+        <div class="bottom-action">
+
+            <button
+                class="btn-main"
+                id="generateButton"
+                onclick="generateTeams()"
+                disabled>
+
+                ⚽ ARMAR
+
+            </button>
+
+        </div>
+
+
+    </div>
 
 </div>
 
@@ -893,6 +1002,21 @@ let lastMatch =
     ) || null;
 
 
+/*
+    HISTORIAL INTERNO
+
+    Guarda los equipos anteriores para poder
+    evitar repetir compañeros.
+
+    No se muestra al usuario.
+*/
+
+let matchHistory =
+    JSON.parse(
+        localStorage.getItem("matchHistory")
+    ) || [];
+
+
 let currentEditPlayer = null;
 
 let currentMode = "random";
@@ -920,6 +1044,11 @@ function saveData() {
     localStorage.setItem(
         "lastMatch",
         JSON.stringify(lastMatch)
+    );
+
+    localStorage.setItem(
+        "matchHistory",
+        JSON.stringify(matchHistory)
     );
 
 }
@@ -1054,10 +1183,6 @@ function renderPlayers() {
         div.appendChild(actions);
 
 
-        /*
-            TODA LA FILA ES TOCABLE
-        */
-
         div.addEventListener(
             "click",
             () => {
@@ -1095,11 +1220,6 @@ function togglePlayer(player) {
 
     } else {
 
-
-        /*
-            NO PERMITIR MÁS DE 12
-        */
-
         if (selectedPlayers.length >= 12) {
 
             showWarning(
@@ -1109,7 +1229,6 @@ function togglePlayer(player) {
             return;
 
         }
-
 
         selectedPlayers.push(player);
 
@@ -1131,19 +1250,11 @@ function updateCounter() {
         selectedPlayers.length;
 
 
-    const counter =
-        document.getElementById("counter");
-
-    const message =
-        document.getElementById(
-            "counterMessage"
-        );
-
-
     const stickyCounter =
         document.getElementById(
             "stickyCounter"
         );
+
 
     const stickyMessage =
         document.getElementById(
@@ -1155,10 +1266,6 @@ function updateCounter() {
         document.getElementById(
             "generateButton"
         );
-
-
-    counter.textContent =
-        `${count} / 12`;
 
 
     stickyCounter.textContent =
@@ -1198,13 +1305,6 @@ function updateCounter() {
             "#55d98b";
 
     }
-
-
-    message.textContent =
-        messageText;
-
-    message.style.color =
-        messageColor;
 
 
     stickyMessage.textContent =
@@ -1288,6 +1388,10 @@ function newSaturday() {
         "teamsContainer"
     ).innerHTML = "";
 
+    document.getElementById(
+        "teamTools"
+    ).style.display = "none";
+
 
     saveData();
 
@@ -1295,7 +1399,7 @@ function newSaturday() {
 
 
     showWarning(
-        "🔄 Nuevo sábado iniciado. Los jugadores y sus valoraciones siguen guardados.",
+        "🔄 Nuevo sábado iniciado. Los jugadores, valoraciones e historial siguen guardados.",
         false
     );
 
@@ -1648,9 +1752,159 @@ function shuffle(array) {
 }
 
 
-/* ALEATORIO */
+/*
+    PAREJAS
 
-function generateRandomTeams() {
+    Devuelve una clave única para una pareja.
+    El orden no importa.
+*/
+
+function pairKey(playerA, playerB) {
+
+    return [
+        playerA,
+        playerB
+    ]
+    .sort()
+    .join("|||");
+
+}
+
+
+/*
+    CONTAR REPETICIONES
+
+    Cuántas parejas del mismo equipo ya
+    jugaron juntas anteriormente.
+*/
+
+function countRepeatedPairs(team) {
+
+    let repeats = 0;
+
+
+    for (
+        let i = 0;
+        i < team.length;
+        i++
+    ) {
+
+        for (
+            let j = i + 1;
+            j < team.length;
+            j++
+        ) {
+
+            const key =
+                pairKey(
+                    team[i],
+                    team[j]
+                );
+
+
+            const times =
+                matchHistory.filter(
+                    match =>
+                        match.pairs &&
+                        match.pairs.includes(key)
+                ).length;
+
+
+            repeats += times;
+
+        }
+
+    }
+
+
+    return repeats;
+
+}
+
+
+/*
+    GENERAR DATOS DE PAREJAS
+
+    Lo hacemos una sola vez por generación
+    para que sea mucho más rápido.
+*/
+
+function buildPairHistory() {
+
+    const pairCounts = {};
+
+
+    matchHistory.forEach(match => {
+
+        if (!match.pairs) {
+            return;
+        }
+
+
+        match.pairs.forEach(pair => {
+
+            pairCounts[pair] =
+                (pairCounts[pair] || 0) + 1;
+
+        });
+
+    });
+
+
+    return pairCounts;
+
+}
+
+
+/*
+    CONTAR REPETICIONES RÁPIDAMENTE
+*/
+
+function countRepeatedPairsFast(
+    team,
+    pairCounts
+) {
+
+    let repeats = 0;
+
+
+    for (
+        let i = 0;
+        i < team.length;
+        i++
+    ) {
+
+        for (
+            let j = i + 1;
+            j < team.length;
+            j++
+        ) {
+
+            const key =
+                pairKey(
+                    team[i],
+                    team[j]
+                );
+
+
+            repeats +=
+                pairCounts[key] || 0;
+
+        }
+
+    }
+
+
+    return repeats;
+
+}
+
+
+/*
+    CREAR CANDIDATO
+*/
+
+function createCandidate() {
 
     const shuffled =
         shuffle(
@@ -1667,6 +1921,91 @@ function generateRandomTeams() {
             shuffled.slice(6, 12)
 
     };
+
+}
+
+
+/*
+    ALEATORIO
+
+    Sigue siendo aleatorio, pero entre las
+    combinaciones que menos repiten parejas.
+
+    Si existe una combinación sin repeticiones,
+    se elige aleatoriamente entre esas.
+*/
+
+function generateRandomTeams() {
+
+    const pairCounts =
+        buildPairHistory();
+
+
+    const candidates = [];
+
+
+    for (
+        let attempt = 0;
+        attempt < 2500;
+        attempt++
+    ) {
+
+        const candidate =
+            createCandidate();
+
+
+        const repeatsA =
+            countRepeatedPairsFast(
+                candidate.teamA,
+                pairCounts
+            );
+
+
+        const repeatsB =
+            countRepeatedPairsFast(
+                candidate.teamB,
+                pairCounts
+            );
+
+
+        const repeats =
+            repeatsA + repeatsB;
+
+
+        candidates.push({
+
+            ...candidate,
+
+            repeats
+
+        });
+
+    }
+
+
+    const bestRepeatCount =
+        Math.min(
+            ...candidates.map(
+                candidate =>
+                    candidate.repeats
+            )
+        );
+
+
+    const bestCandidates =
+        candidates.filter(
+            candidate =>
+                candidate.repeats ===
+                bestRepeatCount
+        );
+
+
+    return bestCandidates[
+        Math.floor(
+            Math.random() *
+            bestCandidates.length
+        )
+    ];
 
 }
 
@@ -1710,47 +2049,44 @@ function calculateTeamLevel(team) {
 }
 
 
-/* EQUILIBRADO */
+/*
+    EQUILIBRADO
+
+    Prioridad:
+
+    1. Menos parejas repetidas.
+    2. Menor diferencia de nivel.
+    3. Aleatoriedad entre candidatos equivalentes.
+*/
 
 function generateBalancedTeams() {
 
-    let bestTeamA = null;
+    const pairCounts =
+        buildPairHistory();
 
-    let bestTeamB = null;
 
-    let bestDifference =
-        Infinity;
+    const candidates = [];
 
 
     for (
         let attempt = 0;
-        attempt < 3000;
+        attempt < 4000;
         attempt++
     ) {
 
-        const shuffled =
-            shuffle(
-                selectedPlayers
-            );
-
-
-        const teamA =
-            shuffled.slice(0, 6);
-
-
-        const teamB =
-            shuffled.slice(6, 12);
+        const candidate =
+            createCandidate();
 
 
         const levelA =
             calculateTeamLevel(
-                teamA
+                candidate.teamA
             );
 
 
         const levelB =
             calculateTeamLevel(
-                teamB
+                candidate.teamB
             );
 
 
@@ -1760,43 +2096,119 @@ function generateBalancedTeams() {
             );
 
 
-        if (
-            difference <
-            bestDifference
+        const repeats =
+            countRepeatedPairsFast(
+                candidate.teamA,
+                pairCounts
+            )
+            +
+            countRepeatedPairsFast(
+                candidate.teamB,
+                pairCounts
+            );
+
+
+        candidates.push({
+
+            ...candidate,
+
+            difference,
+
+            repeats
+
+        });
+
+    }
+
+
+    /*
+        Primero encontramos la menor cantidad
+        posible de repeticiones.
+    */
+
+    const bestRepeatCount =
+        Math.min(
+            ...candidates.map(
+                candidate =>
+                    candidate.repeats
+            )
+        );
+
+
+    const withoutExtraRepeats =
+        candidates.filter(
+            candidate =>
+                candidate.repeats ===
+                bestRepeatCount
+        );
+
+
+    /*
+        Entre esas combinaciones elegimos las
+        que tengan mejor equilibrio.
+    */
+
+    const bestDifference =
+        Math.min(
+            ...withoutExtraRepeats.map(
+                candidate =>
+                    candidate.difference
+            )
+        );
+
+
+    const bestCandidates =
+        withoutExtraRepeats.filter(
+            candidate =>
+                candidate.difference ===
+                bestDifference
+        );
+
+
+    return bestCandidates[
+        Math.floor(
+            Math.random() *
+            bestCandidates.length
+        )
+    ];
+
+}
+
+
+/*
+    CREAR PAREJAS PARA GUARDAR EN HISTORIAL
+*/
+
+function getTeamPairs(team) {
+
+    const pairs = [];
+
+
+    for (
+        let i = 0;
+        i < team.length;
+        i++
+    ) {
+
+        for (
+            let j = i + 1;
+            j < team.length;
+            j++
         ) {
 
-            bestDifference =
-                difference;
-
-            bestTeamA =
-                teamA;
-
-            bestTeamB =
-                teamB;
-
-        }
-
-
-        if (
-            difference === 0
-        ) {
-
-            break;
+            pairs.push(
+                pairKey(
+                    team[i],
+                    team[j]
+                )
+            );
 
         }
 
     }
 
 
-    return {
-
-        teamA:
-            bestTeamA,
-
-        teamB:
-            bestTeamB
-
-    };
+    return pairs;
 
 }
 
@@ -1846,6 +2258,25 @@ function generateTeams() {
     saveLastMatch(
         result.teamA,
         result.teamB
+    );
+
+
+    /*
+        SCROLL SUAVE A LOS EQUIPOS
+    */
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById("teamsSection")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+        },
+        100
     );
 
 }
@@ -1905,6 +2336,11 @@ function displayTeams(
 
     `;
 
+
+    document.getElementById(
+        "teamTools"
+    ).style.display = "flex";
+
 }
 
 
@@ -1949,12 +2385,408 @@ function playerHTML(player) {
 }
 
 
+/* COPIAR EQUIPOS */
+
+function copyTeams() {
+
+    const teams =
+        getCurrentTeams();
+
+
+    if (!teams) {
+
+        return;
+
+    }
+
+
+    const text =
+
+`⚽ FÚTBOL DEL SÁBADO
+
+🔵 EQUIPO A
+${teams.teamA.join("\n")}
+
+🔴 EQUIPO B
+${teams.teamB.join("\n")}`;
+
+
+    navigator.clipboard
+        .writeText(text)
+        .then(
+            () => {
+
+                showWarning(
+                    "📋 ¡Equipos copiados! Ya podés pegarlos en WhatsApp.",
+                    false
+                );
+
+            }
+        )
+        .catch(
+            () => {
+
+                showWarning(
+                    "No se pudo copiar automáticamente."
+                );
+
+            }
+        );
+
+}
+
+
+/*
+    OBTENER EQUIPOS ACTUALES
+*/
+
+function getCurrentTeams() {
+
+    const teamElements =
+        document.querySelectorAll(
+            "#teamsContainer .team"
+        );
+
+
+    if (teamElements.length !== 2) {
+
+        showWarning(
+            "⚠️ Primero tenés que armar los equipos."
+        );
+
+        return null;
+
+    }
+
+
+    const teams = {
+
+        teamA: [],
+
+        teamB: []
+
+    };
+
+
+    teamElements.forEach(
+        (teamElement, index) => {
+
+            const players =
+                teamElement.querySelectorAll(
+                    ".team-player span:first-child"
+                );
+
+
+            players.forEach(
+                playerElement => {
+
+                    if (index === 0) {
+
+                        teams.teamA.push(
+                            playerElement.textContent.trim()
+                        );
+
+                    } else {
+
+                        teams.teamB.push(
+                            playerElement.textContent.trim()
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    return teams;
+
+}
+
+
+/*
+    COMPARTIR COMO IMAGEN
+
+    Genera una imagen directamente con Canvas.
+*/
+
+async function shareTeamsAsImage() {
+
+    const teams =
+        getCurrentTeams();
+
+
+    if (!teams) {
+
+        return;
+
+    }
+
+
+    const canvas =
+        document.createElement("canvas");
+
+
+    const width = 900;
+
+    const height = 1050;
+
+
+    canvas.width = width;
+
+    canvas.height = height;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /*
+        FONDO
+    */
+
+    ctx.fillStyle = "#111";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /*
+        TÍTULO
+    */
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.textAlign = "center";
+
+    ctx.font =
+        "bold 42px Arial";
+
+
+    ctx.fillText(
+        "⚽ FÚTBOL DEL SÁBADO",
+        width / 2,
+        70
+    );
+
+
+    /*
+        EQUIPO A
+    */
+
+    drawTeamOnCanvas(
+        ctx,
+        teams.teamA,
+        "🔵 EQUIPO A",
+        120,
+        "#4da3ff"
+    );
+
+
+    /*
+        EQUIPO B
+    */
+
+    drawTeamOnCanvas(
+        ctx,
+        teams.teamB,
+        "🔴 EQUIPO B",
+        580,
+        "#ff6868"
+    );
+
+
+    canvas.toBlob(
+        async blob => {
+
+            if (!blob) {
+
+                showWarning(
+                    "No se pudo crear la imagen."
+                );
+
+                return;
+
+            }
+
+
+            const file =
+                new File(
+                    [blob],
+                    "equipos-futbol.png",
+                    {
+                        type:
+                            "image/png"
+                    }
+                );
+
+
+            /*
+                En celulares compatibles,
+                intenta abrir directamente
+                el menú de compartir.
+            */
+
+            if (
+                navigator.share &&
+                navigator.canShare &&
+                navigator.canShare({
+                    files: [file]
+                })
+            ) {
+
+                try {
+
+                    await navigator.share({
+
+                        title:
+                            "Equipos del sábado",
+
+                        text:
+                            "⚽ Equipos del sábado",
+
+                        files:
+                            [file]
+
+                    });
+
+                    return;
+
+                } catch (error) {
+
+                    /*
+                        Si el usuario cancela,
+                        no hacemos nada.
+                    */
+
+                    if (
+                        error.name ===
+                        "AbortError"
+                    ) {
+
+                        return;
+
+                    }
+
+                }
+
+            }
+
+
+            /*
+                Si el navegador no soporta
+                compartir archivos, descarga
+                la imagen.
+            */
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href = url;
+
+            link.download =
+                "equipos-futbol.png";
+
+            link.click();
+
+
+            URL.revokeObjectURL(url);
+
+
+            showWarning(
+                "📸 Imagen creada.",
+                false
+            );
+
+        },
+        "image/png"
+    );
+
+}
+
+
+/*
+    DIBUJAR EQUIPO EN CANVAS
+*/
+
+function drawTeamOnCanvas(
+    ctx,
+    team,
+    title,
+    startY,
+    titleColor
+) {
+
+    ctx.textAlign = "center";
+
+    ctx.fillStyle =
+        titleColor;
+
+    ctx.font =
+        "bold 34px Arial";
+
+
+    ctx.fillText(
+        title,
+        450,
+        startY
+    );
+
+
+    ctx.textAlign = "left";
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    ctx.font =
+        "28px Arial";
+
+
+    team.forEach(
+        (player, index) => {
+
+            ctx.fillText(
+                `${index + 1}. ${player}`,
+                170,
+                startY + 55 + (index * 52)
+            );
+
+        }
+    );
+
+}
+
+
 /* GUARDAR ULTIMO ARMADO */
 
 function saveLastMatch(
     teamA,
     teamB
 ) {
+
+    const pairs = [
+
+        ...getTeamPairs(teamA),
+
+        ...getTeamPairs(teamB)
+
+    ];
+
 
     lastMatch = {
 
@@ -1980,6 +2812,52 @@ function saveLastMatch(
             [...teamB]
 
     };
+
+
+    /*
+        Guardamos historial interno.
+
+        Esto no modifica lo que se muestra
+        en "Último armado".
+    */
+
+    matchHistory.push({
+
+        date:
+            new Date().toISOString(),
+
+        players:
+            [
+                ...teamA,
+                ...teamB
+            ],
+
+        teamA:
+            [...teamA],
+
+        teamB:
+            [...teamB],
+
+        pairs:
+            pairs
+
+    });
+
+
+    /*
+        Dejamos como máximo los últimos
+        30 partidos para no acumular datos
+        innecesarios.
+    */
+
+    if (
+        matchHistory.length > 30
+    ) {
+
+        matchHistory =
+            matchHistory.slice(-30);
+
+    }
 
 
     saveData();
@@ -2144,15 +3022,21 @@ function showWarning(
     }
 
 
-    setTimeout(
-        () => {
-
-            warning.style.display =
-                "none";
-
-        },
-        3000
+    clearTimeout(
+        window.warningTimeout
     );
+
+
+    window.warningTimeout =
+        setTimeout(
+            () => {
+
+                warning.style.display =
+                    "none";
+
+            },
+            3000
+        );
 
 }
 
