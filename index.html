@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fútbol del Sábado ⚽</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f2f2f7;
+      color: #111;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px 16px 40px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-top: 5px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .counter {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .player:last-child {
+      border-bottom: none;
+    }
+
+    .player input {
+      width: 21px;
+      height: 21px;
+    }
+
+    .player-name {
+      flex: 1;
+      font-size: 17px;
+    }
+
+    .delete {
+      border: none;
+      background: none;
+      color: #999;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .add-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .add {
+      background: #111;
+      color: white;
+    }
+
+    .buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .main-button {
+      background: #007aff;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 16px;
+    }
+
+    .secondary {
+      background: #e5e5ea;
+      color: #111;
+    }
+
+    .teams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .team {
+      border-radius: 16px;
+      padding: 15px;
+      background: #fff;
+      border: 2px solid #ddd;
+    }
+
+    .team h2 {
+      margin-top: 0;
+      font-size: 19px;
+    }
+
+    .team p {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .message {
+      color: #666;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 450px) {
+      .teams {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>⚽ Fútbol del Sábado</h1>
+  <div class="subtitle">
+    Elegí quiénes vienen y armá los equipos.
+  </div>
+
+  <div class="card">
+
+    <div class="counter" id="counter">
+      0 jugadores seleccionados
+    </div>
+
+    <div id="players"></div>
+
+    <div class="add-row">
+      <input
+        type="text"
+        id="newPlayer"
+        placeholder="Nuevo jugador..."
+      >
+
+      <button class="add" onclick="addPlayer()">
+        +
+      </button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="buttons">
+
+      <button
+        class="main-button"
+        onclick="makeTeams()"
+      >
+        🎲 ARMAR EQUIPOS
+      </button>
+
+      <button
+        class="secondary"
+        onclick="selectAll()"
+      >
+        ☑️ Seleccionar todos
+      </button>
+
+      <button
+        class="secondary"
+        onclick="clearAll()"
+      >
+        ⬜ Desmarcar todos
+      </button>
+
+    </div>
+
+    <div class="message" id="message"></div>
+
+  </div>
+
+  <div id="result"></div>
+
+</div>
+
+
+<script>
+
+const defaultPlayers = [
+  "Kevin",
+  "Carlos",
+  "Brian",
+  "Alan Lopez",
+  "Alan Casla",
+  "Joel Abejita",
+  "Facu",
+  "Joaquin",
+  "Menzo",
+  "Martin",
+  "Ivo",
+  "Nicolas",
+  "El Pela",
+  "Mateo",
+  "Gian",
+  "Yuseet"
+];
+
+let players =
+  JSON.parse(localStorage.getItem("players")) ||
+  defaultPlayers;
+
+let selected =
+  JSON.parse(localStorage.getItem("selected")) ||
+  [];
+
+
+function save() {
+
+  localStorage.setItem(
+    "players",
+    JSON.stringify(players)
+  );
+
+  localStorage.setItem(
+    "selected",
+    JSON.stringify(selected)
+  );
+}
+
+
+function renderPlayers() {
+
+  const container =
+    document.getElementById("players");
+
+  container.innerHTML = "";
+
+  players.forEach((player, index) => {
+
+    const row =
+      document.createElement("div");
+
+    row.className = "player";
+
+    const checkbox =
+      document.createElement("input");
+
+    checkbox.type = "checkbox";
+
+    checkbox.checked =
+      selected.includes(player);
+
+    checkbox.onchange = function() {
+
+      if (checkbox.checked) {
+
+        if (!selected.includes(player)) {
+          selected.push(player);
+        }
+
+      } else {
+
+        selected =
+          selected.filter(
+            p => p !== player
+          );
+      }
+
+      save();
+      updateCounter();
+    };
+
+
+    const name =
+      document.createElement("div");
+
+    name.className = "player-name";
+    name.textContent = player;
+
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className = "delete";
+    deleteButton.textContent = "×";
+
+    deleteButton.onclick = function() {
+
+      players =
+        players.filter(
+          p => p !== player
+        );
+
+      selected =
+        selected.filter(
+          p => p !== player
+        );
+
+      save();
+      renderPlayers();
+    };
+
+
+    row.appendChild(checkbox);
+    row.appendChild(name);
+    row.appendChild(deleteButton);
+
+    container.appendChild(row);
+
+  });
+
+  updateCounter();
+}
+
+
+function updateCounter() {
+
+  document.getElementById("counter").textContent =
+    selected.length +
+    " jugador" +
+    (selected.length === 1 ? "" : "es") +
+    " seleccionado" +
+    (selected.length === 1 ? "" : "s");
+}
+
+
+function addPlayer() {
+
+  const input =
+    document.getElementById("newPlayer");
+
+  const name =
+    input.value.trim();
+
+  if (!name) return;
+
+
+  const exists =
+    players.some(
+      p =>
+        p.toLowerCase() ===
+        name.toLowerCase()
+    );
+
+  if (exists) {
+
+    document.getElementById("message").textContent =
+      "Ese jugador ya existe.";
+
+    return;
+  }
+
+
+  players.push(name);
+  selected.push(name);
+
+  input.value = "";
+
+  save();
+  renderPlayers();
+
+  document.getElementById("message").textContent =
+    name + " fue agregado.";
+}
+
+
+function selectAll() {
+
+  selected = [...players];
+
+  save();
+  renderPlayers();
+}
+
+
+function clearAll() {
+
+  selected = [];
+
+  save();
+  renderPlayers();
+
+  document.getElementById("result").innerHTML = "";
+}
+
+
+function shuffle(array) {
+
+  const copy = [...array];
+
+  for (
+    let i = copy.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [copy[i], copy[j]] =
+      [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
+
+function makeTeams() {
+
+  if (selected.length < 2) {
+
+    document.getElementById("message").textContent =
+      "Necesitás al menos 2 jugadores.";
+
+    return;
+  }
+
+
+  const shuffled =
+    shuffle(selected);
+
+
+  const teamA = [];
+  const teamB = [];
+
+
+  shuffled.forEach(
+    (player, index) => {
+
+      if (index % 2 === 0) {
+        teamA.push(player);
+      } else {
+        teamB.push(player);
+      }
+
+    }
+  );
+
+
+  let html = `
+
+    <div class="card">
+
+      <div class="teams">
+
+        <div class="team">
+
+          <h2>🔵 Equipo A</h2>
+
+          ${teamA
+            .map(
+              (p, i) =>
+                `<p>${i + 1}. ${p}</p>`
+            )
+            .join("")}
+
+        </div>
+
+
+        <div class="team">
+
+          <h2>🟠 Equipo B</h2>
+
+          ${teamB
+            .map(
+              (p, i) =>
+                `<p>${i + 1}. ${p}</p>`
+            )
+            .join("")}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.getElementById("result").innerHTML =
+    html;
+
+  document.getElementById("message").textContent =
+    teamA.length +
+    " vs " +
+    teamB.length +
+    " — ¡A jugar!";
+}
+
+
+renderPlayers();
+
+</script>
+
+</body>
+</html>
