@@ -3,350 +3,428 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚽ Fútbol del Sábado</title>
+<title>Fútbol del Sábado</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f1115;
-    color: #f1f1f1;
-    min-height: 100vh;
-}
-
-.container {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    margin: 5px 0 20px;
-    font-size: 30px;
-}
-
-.card {
-    background: #181b21;
-    border: 1px solid #292e38;
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 18px;
-}
-
-h2 {
-    margin-top: 0;
-    font-size: 20px;
-}
-
-/* CONTADOR */
-
-.counter {
-    text-align: center;
-    background: #22262e;
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 16px;
-}
-
-.counter-number {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.counter-message {
-    margin-top: 5px;
-    color: #aaa;
-}
-
-.ready {
-    color: #32d583;
-}
-
-.warning {
-    color: #ffb020;
-}
-
-.danger {
-    color: #ff5c5c;
-}
-
-/* JUGADORES */
-
-#playersList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.player {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: #22262e;
-    border-radius: 10px;
-    padding: 9px;
-    min-width: 0;
-}
-
-.player label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    min-width: 0;
-    flex: 1;
-}
-
-.player input[type="checkbox"] {
-    width: 19px;
-    height: 19px;
-    accent-color: #32d583;
-    flex-shrink: 0;
-}
-
-.player-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.player-buttons {
-    display: flex;
-    gap: 2px;
-}
-
-.edit,
-.delete {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 3px;
-    font-size: 16px;
-}
-
-.edit {
-    color: #aaa;
-}
-
-.delete {
-    color: #ff5c5c;
-}
-
-/* AGREGAR */
-
-.add-player {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.add-player input {
-    flex: 1;
-    min-width: 0;
-    background: #101217;
-    border: 1px solid #343a46;
-    color: white;
-    border-radius: 9px;
-    padding: 12px;
-    font-size: 15px;
-}
-
-button {
-    border: none;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.add-btn {
-    background: #32d583;
-    color: #07140d;
-    padding: 0 18px;
-}
-
-.small-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.small-buttons button {
-    background: #292e38;
-    color: #ddd;
-    padding: 9px 12px;
-}
-
-/* ARMAR */
-
-.main-button {
-    width: 100%;
-    padding: 16px;
-    background: #32d583;
-    color: #07140d;
-    font-size: 18px;
-    margin-top: 5px;
-}
-
-.main-button:disabled {
-    background: #343942;
-    color: #777;
-    cursor: not-allowed;
-}
-
-/* EQUIPOS */
-
-#teams {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.team {
-    background: #181b21;
-    border: 1px solid #292e38;
-    border-radius: 14px;
-    padding: 18px;
-}
-
-.team h2 {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.team ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.team li {
-    background: #22262e;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 7px;
-}
-
-/* MODAL */
-
-.modal-background {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 1000;
-    padding: 20px;
-}
-
-.modal {
-    width: 100%;
-    max-width: 430px;
-    margin: 80px auto;
-    background: #181b21;
-    border: 1px solid #343a46;
-    border-radius: 15px;
-    padding: 20px;
-}
-
-.modal h2 {
-    margin-bottom: 20px;
-}
-
-.modal label {
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 7px;
-    color: #bbb;
-}
-
-.modal input,
-.modal select {
-    width: 100%;
-    background: #101217;
-    color: white;
-    border: 1px solid #343a46;
-    border-radius: 9px;
-    padding: 12px;
-    font-size: 16px;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.save-btn {
-    flex: 1;
-    padding: 12px;
-    background: #32d583;
-    color: #07140d;
-}
-
-.cancel-btn {
-    flex: 1;
-    padding: 12px;
-    background: #292e38;
-    color: white;
-}
-
-/* CELULAR */
-
-@media (max-width: 700px) {
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+        min-height: 100vh;
+    }
 
     .container {
-        padding: 12px;
+        max-width: 1100px;
+        margin: auto;
+        padding: 25px 18px 50px;
     }
 
     h1 {
-        font-size: 25px;
+        text-align: center;
+        margin: 0 0 8px;
+        font-size: 32px;
     }
 
-    #playersList {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+    .subtitle {
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 25px;
+    }
+
+    .top-info {
+        background: #1c1c1c;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 20px;
+        text-align: center;
+        border: 1px solid #292929;
+    }
+
+    #counter {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    #counterMessage {
+        color: #aaa;
+        font-size: 15px;
+    }
+
+    .rating-summary {
+        margin-top: 10px;
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    button {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 17px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+    button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        filter: brightness(1.1);
+    }
+
+    button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    .btn-main {
+        background: #1f8f4d;
+        color: white;
+    }
+
+    .btn-blue {
+        background: #2864d7;
+        color: white;
+    }
+
+    .btn-gray {
+        background: #333;
+        color: white;
+    }
+
+    .btn-red {
+        background: #b83232;
+        color: white;
+    }
+
+    .mode-box {
+        background: #1c1c1c;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .mode-title {
+        font-weight: bold;
+        margin-bottom: 12px;
+        font-size: 18px;
+    }
+
+    .mode-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .mode-button {
+        background: #292929;
+        color: #ddd;
+        border: 2px solid transparent;
+    }
+
+    .mode-button.active {
+        border-color: #42a5f5;
+        background: #202f3d;
+        color: white;
+    }
+
+    .players-section {
+        background: #1c1c1c;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #292929;
+    }
+
+    .section-title {
+        font-size: 21px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .players-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
     }
 
     .player {
-        padding: 9px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #252525;
+        padding: 10px;
+        border-radius: 10px;
+        min-width: 0;
     }
 
-    #teams {
+    .player input {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .player-name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .player-stars {
+        color: #ffc107;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .player-actions {
+        display: flex;
+        gap: 4px;
+    }
+
+    .icon-button {
+        background: #333;
+        color: white;
+        padding: 6px 8px;
+        border-radius: 7px;
+        font-size: 13px;
+    }
+
+    .add-player {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .add-player input {
+        flex: 1;
+        background: #111;
+        border: 1px solid #444;
+        color: white;
+        border-radius: 9px;
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .teams {
+        display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 18px;
+        margin-top: 25px;
     }
 
     .team {
-        padding: 12px;
+        background: #1c1c1c;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #292929;
     }
 
     .team h2 {
-        font-size: 17px;
+        margin-top: 0;
+        text-align: center;
+        font-size: 23px;
     }
 
-    .team li {
-        padding: 9px 6px;
+    .team-a h2 {
+        color: #4da3ff;
+    }
+
+    .team-b h2 {
+        color: #ff6868;
+    }
+
+    .team-player {
+        background: #252525;
+        border-radius: 9px;
+        padding: 11px;
+        margin: 7px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .team-player .stars {
+        color: #ffc107;
+        font-size: 13px;
+    }
+
+    .team-total {
+        margin-top: 13px;
+        padding-top: 12px;
+        border-top: 1px solid #333;
+        text-align: center;
+        color: #aaa;
         font-size: 14px;
     }
-}
 
-@media (max-width: 400px) {
+    .last-match {
+        background: #1c1c1c;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 18px;
+        margin-top: 25px;
+    }
 
-    .player-name {
+    .last-match h2 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .last-date {
+        text-align: center;
+        color: #888;
+        margin-bottom: 18px;
         font-size: 14px;
     }
 
-    .edit,
-    .delete {
+    .last-teams {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .last-team {
+        background: #252525;
+        border-radius: 10px;
+        padding: 13px;
+    }
+
+    .last-team h3 {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .last-team ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #ddd;
+    }
+
+    .empty-last {
+        text-align: center;
+        color: #777;
+        padding: 10px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.75);
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 450px;
+        background: #1c1c1c;
+        border-radius: 15px;
+        padding: 22px;
+        border: 1px solid #333;
+    }
+
+    .modal-content h2 {
+        margin-top: 0;
+    }
+
+    .form-group {
+        margin-bottom: 17px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        color: #ccc;
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        background: #111;
+        border: 1px solid #444;
+        color: white;
+        border-radius: 9px;
+        padding: 11px;
         font-size: 15px;
     }
-}
+
+    .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modal-buttons button {
+        flex: 1;
+    }
+
+    .warning {
+        background: #432525;
+        border: 1px solid #733737;
+        color: #ffb5b5;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+    }
+
+    @media (max-width: 750px) {
+        .players-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .teams,
+        .last-teams {
+            grid-template-columns: 1fr;
+        }
+
+        h1 {
+            font-size: 27px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .players-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .add-player {
+            flex-direction: column;
+        }
+
+        .controls {
+            flex-direction: column;
+        }
+
+        .controls button {
+            width: 100%;
+        }
+    }
 </style>
 </head>
 
@@ -355,88 +433,140 @@ button {
 <div class="container">
 
     <h1>⚽ Fútbol del Sábado</h1>
+    <div class="subtitle">Armá los equipos sin romperte la cabeza</div>
 
-    <div class="card">
+    <div class="top-info">
+        <div id="counter">0 / 12</div>
+        <div id="counterMessage">Seleccioná 12 jugadores</div>
+        <div class="rating-summary" id="ratingSummary"></div>
+    </div>
 
-        <h2>👥 ¿Quiénes vienen?</h2>
+    <div class="mode-box">
+        <div class="mode-title">Modo de armado</div>
 
-        <div class="counter">
-            <div class="counter-number" id="counterNumber">0 / 12</div>
-            <div class="counter-message" id="counterMessage">
-                Faltan 12 jugadores
-            </div>
+        <div class="mode-buttons">
+            <button
+                id="randomMode"
+                class="mode-button active"
+                onclick="setMode('random')">
+                🎲 Aleatorio
+            </button>
+
+            <button
+                id="balancedMode"
+                class="mode-button"
+                onclick="setMode('balanced')">
+                ⚖️ Equilibrado
+            </button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-main" id="generateButton" onclick="generateTeams()" disabled>
+            ⚽ Armar equipos
+        </button>
+
+        <button class="btn-blue" onclick="selectAll()">
+            ☑️ Seleccionar todos
+        </button>
+
+        <button class="btn-gray" onclick="clearSelection()">
+            ⬜ Limpiar selección
+        </button>
+
+        <button class="btn-gray" onclick="newSaturday()">
+            🔄 Nuevo sábado
+        </button>
+    </div>
+
+    <div class="warning" id="warning"></div>
+
+    <div class="players-section">
+
+        <div class="section-title">
+            👥 Jugadores
         </div>
 
-        <div id="playersList"></div>
+        <div class="players-grid" id="playersGrid"></div>
 
         <div class="add-player">
             <input
                 type="text"
-                id="newPlayer"
+                id="newPlayerName"
                 placeholder="Nombre del nuevo jugador"
-            >
-            <button class="add-btn" onclick="addPlayer()">Agregar</button>
-        </div>
+                maxlength="30"
+                onkeydown="if(event.key === 'Enter') addPlayer()">
 
-        <div class="small-buttons">
-            <button onclick="selectAll()">Seleccionar todos</button>
-            <button onclick="clearAll()">Limpiar</button>
+            <button class="btn-main" onclick="addPlayer()">
+                ➕ Agregar
+            </button>
         </div>
 
     </div>
 
-    <button
-        class="main-button"
-        id="makeTeamsButton"
-        onclick="makeTeams()"
-        disabled
-    >
-        🎲 ARMAR EQUIPOS
-    </button>
+    <div class="teams" id="teamsContainer"></div>
 
-    <div id="teams"></div>
+    <div class="last-match">
+
+        <h2>📋 Último armado</h2>
+
+        <div id="lastMatchContent">
+            <div class="empty-last">
+                Todavía no hay un armado anterior.
+            </div>
+        </div>
+
+    </div>
 
 </div>
 
 
-<!-- VENTANA PARA EDITAR JUGADOR -->
+<!-- MODAL EDITAR JUGADOR -->
 
-<div class="modal-background" id="modalBackground">
+<div class="modal" id="editModal">
 
-    <div class="modal">
+    <div class="modal-content">
 
         <h2>⚙️ Editar jugador</h2>
 
-        <label for="editName">Nombre</label>
-        <input type="text" id="editName">
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="editName" maxlength="30">
+        </div>
 
-        <label for="editLevel">Nivel (opcional)</label>
-        <select id="editLevel">
-            <option value="">Sin valorar</option>
-            <option value="1">⭐ 1</option>
-            <option value="2">⭐⭐ 2</option>
-            <option value="3">⭐⭐⭐ 3</option>
-            <option value="4">⭐⭐⭐⭐ 4</option>
-            <option value="5">⭐⭐⭐⭐⭐ 5</option>
-        </select>
+        <div class="form-group">
+            <label>Nivel (opcional)</label>
 
-        <label for="editPosition">Posición (opcional)</label>
-        <select id="editPosition">
-            <option value="">Sin posición</option>
-            <option value="Arquero">🧤 Arquero</option>
-            <option value="Defensa">🛡️ Defensa</option>
-            <option value="Medio">⚙️ Medio</option>
-            <option value="Delantero">⚡ Delantero</option>
-            <option value="Cualquiera">⚽ Cualquiera</option>
-        </select>
+            <select id="editLevel">
+                <option value="">Sin valorar</option>
+                <option value="1">⭐ 1</option>
+                <option value="2">⭐⭐ 2</option>
+                <option value="3">⭐⭐⭐ 3</option>
+                <option value="4">⭐⭐⭐⭐ 4</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Posición (opcional)</label>
+
+            <select id="editPosition">
+                <option value="">Sin posición</option>
+                <option value="Arquero">🧤 Arquero</option>
+                <option value="Defensa">🛡️ Defensa</option>
+                <option value="Medio">⚽ Medio</option>
+                <option value="Delantero">🎯 Delantero</option>
+                <option value="Cualquiera">🔄 Cualquiera</option>
+            </select>
+        </div>
 
         <div class="modal-buttons">
-            <button class="cancel-btn" onclick="closeModal()">
+            <button class="btn-gray" onclick="closeModal()">
                 Cancelar
             </button>
 
-            <button class="save-btn" onclick="savePlayer()">
-                Guardar
+            <button class="btn-main" onclick="savePlayer()">
+                💾 Guardar
             </button>
         </div>
 
@@ -447,7 +577,7 @@ button {
 
 <script>
 
-let players = JSON.parse(localStorage.getItem("players")) || [
+const defaultPlayers = [
     "Kevin",
     "Carlos",
     "Brian",
@@ -466,102 +596,80 @@ let players = JSON.parse(localStorage.getItem("players")) || [
     "Yuseet"
 ];
 
-let selected = JSON.parse(localStorage.getItem("selected")) || [];
+let players = JSON.parse(
+    localStorage.getItem("footballPlayers")
+) || defaultPlayers;
 
-let playerData = JSON.parse(localStorage.getItem("playerData")) || {};
+let selectedPlayers = JSON.parse(
+    localStorage.getItem("selectedPlayers")
+) || [];
 
-let editingPlayer = null;
+let playerData = JSON.parse(
+    localStorage.getItem("playerData")
+) || {};
+
+let lastMatch = JSON.parse(
+    localStorage.getItem("lastMatch")
+) || null;
+
+let currentEditPlayer = null;
+
+let currentMode = "random";
 
 
 function saveData() {
 
-    localStorage.setItem("players", JSON.stringify(players));
-    localStorage.setItem("selected", JSON.stringify(selected));
-    localStorage.setItem("playerData", JSON.stringify(playerData));
+    localStorage.setItem(
+        "footballPlayers",
+        JSON.stringify(players)
+    );
 
-}
+    localStorage.setItem(
+        "selectedPlayers",
+        JSON.stringify(selectedPlayers)
+    );
 
+    localStorage.setItem(
+        "playerData",
+        JSON.stringify(playerData)
+    );
 
-function updateCounter() {
-
-    const count = selected.length;
-
-    const number = document.getElementById("counterNumber");
-    const message = document.getElementById("counterMessage");
-    const button = document.getElementById("makeTeamsButton");
-
-    number.textContent = count + " / 12";
-
-    number.className = "counter-number";
-    message.className = "counter-message";
-
-    if (count < 12) {
-
-        const missing = 12 - count;
-
-        message.textContent =
-            "Faltan " + missing + " jugador" + (missing === 1 ? "" : "es");
-
-        message.classList.add("warning");
-
-        button.disabled = true;
-
-    } else if (count === 12) {
-
-        message.textContent = "🟢 ¡Listos para jugar!";
-
-        message.classList.add("ready");
-
-        button.disabled = false;
-
-    } else {
-
-        const extra = count - 12;
-
-        message.textContent =
-            "⚠️ Hay " + extra + " jugador" + (extra === 1 ? "" : "es") + " de más";
-
-        message.classList.add("danger");
-
-        button.disabled = true;
-    }
+    localStorage.setItem(
+        "lastMatch",
+        JSON.stringify(lastMatch)
+    );
 }
 
 
 function renderPlayers() {
 
-    const list = document.getElementById("playersList");
+    const grid = document.getElementById("playersGrid");
 
-    list.innerHTML = "";
+    grid.innerHTML = "";
 
-    players.forEach((player, index) => {
+    players.forEach(player => {
+
+        const data = playerData[player] || {};
 
         const div = document.createElement("div");
-
         div.className = "player";
 
-
-        const label = document.createElement("label");
-
-
         const checkbox = document.createElement("input");
-
         checkbox.type = "checkbox";
-
-        checkbox.checked = selected.includes(player);
-
+        checkbox.checked = selectedPlayers.includes(player);
 
         checkbox.addEventListener("change", () => {
 
             if (checkbox.checked) {
 
-                if (!selected.includes(player)) {
-                    selected.push(player);
+                if (!selectedPlayers.includes(player)) {
+                    selectedPlayers.push(player);
                 }
 
             } else {
 
-                selected = selected.filter(p => p !== player);
+                selectedPlayers =
+                    selectedPlayers.filter(p => p !== player);
 
             }
 
@@ -571,84 +679,193 @@ function renderPlayers() {
         });
 
 
-        const name = document.createElement("span");
-
+        const name = document.createElement("div");
         name.className = "player-name";
-
         name.textContent = player;
 
 
-        label.appendChild(checkbox);
-        label.appendChild(name);
+        const stars = document.createElement("div");
+        stars.className = "player-stars";
+
+        if (data.level) {
+            stars.textContent =
+                "★".repeat(Number(data.level));
+        }
 
 
-        const buttons = document.createElement("div");
-
-        buttons.className = "player-buttons";
+        const actions = document.createElement("div");
+        actions.className = "player-actions";
 
 
         const editButton = document.createElement("button");
-
-        editButton.className = "edit";
-
+        editButton.className = "icon-button";
         editButton.textContent = "⚙️";
-
         editButton.title = "Editar jugador";
 
-        editButton.onclick = () => openModal(player);
-
-
-        const deleteButton = document.createElement("button");
-
-        deleteButton.className = "delete";
-
-        deleteButton.textContent = "✕";
-
-        deleteButton.title = "Eliminar jugador";
-
-
-        deleteButton.onclick = () => {
-
-            players.splice(index, 1);
-
-            selected = selected.filter(p => p !== player);
-
-            delete playerData[player];
-
-            saveData();
-
-            renderPlayers();
-            updateCounter();
-
+        editButton.onclick = () => {
+            openEditModal(player);
         };
 
 
-        buttons.appendChild(editButton);
-        buttons.appendChild(deleteButton);
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "icon-button";
+        deleteButton.textContent = "🗑️";
+        deleteButton.title = "Eliminar jugador";
+
+        deleteButton.onclick = () => {
+            deletePlayer(player);
+        };
 
 
-        div.appendChild(label);
-        div.appendChild(buttons);
+        actions.appendChild(editButton);
+        actions.appendChild(deleteButton);
 
-        list.appendChild(div);
+
+        div.appendChild(checkbox);
+        div.appendChild(name);
+        div.appendChild(stars);
+        div.appendChild(actions);
+
+        grid.appendChild(div);
 
     });
 
+    updateCounter();
+}
+
+
+function updateCounter() {
+
+    const count = selectedPlayers.length;
+
+    const counter = document.getElementById("counter");
+    const message = document.getElementById("counterMessage");
+    const button = document.getElementById("generateButton");
+
+    counter.textContent = `${count} / 12`;
+
+    button.disabled = count !== 12;
+
+
+    if (count === 0) {
+
+        message.textContent = "Seleccioná 12 jugadores";
+        message.style.color = "#aaa";
+
+    } else if (count < 12) {
+
+        message.textContent =
+            `Faltan ${12 - count} jugador${12 - count === 1 ? "" : "es"}`;
+
+        message.style.color = "#aaa";
+
+    } else if (count === 12) {
+
+        message.textContent = "🟢 ¡Listos para jugar!";
+        message.style.color = "#55d98b";
+
+    } else {
+
+        message.textContent =
+            `⚠️ Hay ${count - 12} jugador${count - 12 === 1 ? "" : "es"} de más`;
+
+        message.style.color = "#ff7777";
+    }
+
+
+    updateRatingSummary();
+}
+
+
+function updateRatingSummary() {
+
+    let rated = 0;
+
+    selectedPlayers.forEach(player => {
+
+        const data = playerData[player];
+
+        if (data && data.level) {
+            rated++;
+        }
+
+    });
+
+    const unrated = selectedPlayers.length - rated;
+
+    const summary =
+        document.getElementById("ratingSummary");
+
+    if (selectedPlayers.length === 0) {
+
+        summary.textContent = "";
+
+    } else {
+
+        summary.textContent =
+            `⭐ ${rated} con nivel · — ${unrated} sin valorar`;
+
+    }
+}
+
+
+function selectAll() {
+
+    selectedPlayers = [...players];
+
+    saveData();
+    renderPlayers();
+}
+
+
+function clearSelection() {
+
+    selectedPlayers = [];
+
+    saveData();
+    renderPlayers();
+}
+
+
+function newSaturday() {
+
+    selectedPlayers = [];
+
+    document.getElementById("teamsContainer").innerHTML = "";
+
+    saveData();
+    renderPlayers();
+
+    showWarning(
+        "🔄 Nuevo sábado iniciado. Los jugadores y sus valoraciones siguen guardados.",
+        false
+    );
 }
 
 
 function addPlayer() {
 
-    const input = document.getElementById("newPlayer");
+    const input =
+        document.getElementById("newPlayerName");
 
-    const name = input.value.trim();
+    const name =
+        input.value.trim();
 
-    if (!name) return;
+    if (!name) {
+        return;
+    }
 
 
-    if (players.includes(name)) {
+    const exists =
+        players.some(
+            p => p.toLowerCase() === name.toLowerCase()
+        );
 
-        alert("Ese jugador ya está en la lista.");
+    if (exists) {
+
+        showWarning(
+            "Ese jugador ya está en la lista."
+        );
 
         return;
     }
@@ -656,57 +873,54 @@ function addPlayer() {
 
     players.push(name);
 
+    playerData[name] = {};
+
     input.value = "";
 
     saveData();
-
     renderPlayers();
-    updateCounter();
 
+    showWarning(
+        `✅ ${name} fue agregado.`,
+        false
+    );
 }
 
 
-function selectAll() {
+function deletePlayer(player) {
 
-    if (players.length < 12) {
+    const confirmDelete =
+        confirm(
+            `¿Seguro que querés eliminar a ${player}?`
+        );
 
-        selected = [...players];
-
-    } else {
-
-        selected = [...players];
-
+    if (!confirmDelete) {
+        return;
     }
 
+
+    players =
+        players.filter(p => p !== player);
+
+    selectedPlayers =
+        selectedPlayers.filter(p => p !== player);
+
+    delete playerData[player];
+
     saveData();
-
     renderPlayers();
-    updateCounter();
-
 }
 
 
-function clearAll() {
+function openEditModal(player) {
 
-    selected = [];
+    currentEditPlayer = player;
 
-    saveData();
+    const data =
+        playerData[player] || {};
 
-    renderPlayers();
-    updateCounter();
-
-    document.getElementById("teams").innerHTML = "";
-
-}
-
-
-function openModal(player) {
-
-    editingPlayer = player;
-
-    const data = playerData[player] || {};
-
-    document.getElementById("editName").value = player;
+    document.getElementById("editName").value =
+        player;
 
     document.getElementById("editLevel").value =
         data.level || "";
@@ -714,26 +928,29 @@ function openModal(player) {
     document.getElementById("editPosition").value =
         data.position || "";
 
-    document.getElementById("modalBackground").style.display = "block";
-
+    document.getElementById("editModal").style.display =
+        "flex";
 }
 
 
 function closeModal() {
 
-    editingPlayer = null;
+    currentEditPlayer = null;
 
-    document.getElementById("modalBackground").style.display = "none";
-
+    document.getElementById("editModal").style.display =
+        "none";
 }
 
 
 function savePlayer() {
 
-    if (!editingPlayer) return;
+    if (!currentEditPlayer) {
+        return;
+    }
 
 
-    const oldName = editingPlayer;
+    const oldName =
+        currentEditPlayer;
 
     const newName =
         document.getElementById("editName").value.trim();
@@ -748,134 +965,462 @@ function savePlayer() {
     if (!newName) {
 
         alert("El jugador necesita un nombre.");
-
         return;
     }
 
 
-    if (
-        newName !== oldName &&
-        players.includes(newName)
-    ) {
-
-        alert("Ya existe un jugador con ese nombre.");
-
-        return;
-    }
-
-
-    const index = players.indexOf(oldName);
-
-    if (index !== -1) {
-        players[index] = newName;
-    }
-
-
-    if (selected.includes(oldName)) {
-
-        selected = selected.map(player =>
-            player === oldName ? newName : player
+    const duplicate =
+        players.some(
+            p =>
+                p !== oldName &&
+                p.toLowerCase() === newName.toLowerCase()
         );
 
+
+    if (duplicate) {
+
+        alert("Ya existe un jugador con ese nombre.");
+        return;
     }
 
 
-    const oldData = playerData[oldName] || {};
+    if (newName !== oldName) {
 
-    delete playerData[oldName];
+        players =
+            players.map(
+                p => p === oldName ? newName : p
+            );
+
+
+        selectedPlayers =
+            selectedPlayers.map(
+                p => p === oldName ? newName : p
+            );
+
+
+        playerData[newName] =
+            playerData[oldName] || {};
+
+        delete playerData[oldName];
+
+    }
 
 
     playerData[newName] = {
-        level: level,
-        position: position
+        level: level || "",
+        position: position || ""
+    };
+
+
+    saveData();
+    renderPlayers();
+    closeModal();
+}
+
+
+function setMode(mode) {
+
+    currentMode = mode;
+
+    const randomButton =
+        document.getElementById("randomMode");
+
+    const balancedButton =
+        document.getElementById("balancedMode");
+
+
+    randomButton.classList.remove("active");
+    balancedButton.classList.remove("active");
+
+
+    if (mode === "random") {
+        randomButton.classList.add("active");
+    } else {
+        balancedButton.classList.add("active");
+    }
+}
+
+
+function shuffle(array) {
+
+    const arr = [...array];
+
+    for (
+        let i = arr.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(Math.random() * (i + 1));
+
+        [arr[i], arr[j]] =
+            [arr[j], arr[i]];
+    }
+
+    return arr;
+}
+
+
+function generateRandomTeams() {
+
+    const shuffled =
+        shuffle(selectedPlayers);
+
+    return {
+        teamA: shuffled.slice(0, 6),
+        teamB: shuffled.slice(6, 12)
+    };
+}
+
+
+function getPlayerLevel(player) {
+
+    const data =
+        playerData[player];
+
+    if (!data || !data.level) {
+
+        // Jugador sin valorar:
+        // lo tratamos como nivel neutro.
+        return 3;
+    }
+
+    return Number(data.level);
+}
+
+
+function calculateTeamLevel(team) {
+
+    return team.reduce(
+        (total, player) =>
+            total + getPlayerLevel(player),
+        0
+    );
+}
+
+
+function generateBalancedTeams() {
+
+    /*
+        Probamos muchas combinaciones aleatorias
+        de 6 jugadores y nos quedamos con la que
+        tenga menor diferencia de nivel.
+
+        Los jugadores sin valorar cuentan como 3,
+        es decir, un nivel neutral.
+    */
+
+    let bestTeamA = null;
+    let bestTeamB = null;
+    let bestDifference = Infinity;
+
+
+    for (let attempt = 0; attempt < 3000; attempt++) {
+
+        const shuffled =
+            shuffle(selectedPlayers);
+
+        const teamA =
+            shuffled.slice(0, 6);
+
+        const teamB =
+            shuffled.slice(6, 12);
+
+
+        const levelA =
+            calculateTeamLevel(teamA);
+
+        const levelB =
+            calculateTeamLevel(teamB);
+
+
+        const difference =
+            Math.abs(levelA - levelB);
+
+
+        if (difference < bestDifference) {
+
+            bestDifference = difference;
+            bestTeamA = teamA;
+            bestTeamB = teamB;
+
+        }
+
+
+        if (difference === 0) {
+            break;
+        }
+    }
+
+
+    return {
+        teamA: bestTeamA,
+        teamB: bestTeamB
+    };
+}
+
+
+function generateTeams() {
+
+    if (selectedPlayers.length !== 12) {
+
+        showWarning(
+            "⚠️ Necesitás seleccionar exactamente 12 jugadores."
+        );
+
+        return;
+    }
+
+
+    let result;
+
+
+    if (currentMode === "balanced") {
+
+        result =
+            generateBalancedTeams();
+
+    } else {
+
+        result =
+            generateRandomTeams();
+
+    }
+
+
+    displayTeams(
+        result.teamA,
+        result.teamB
+    );
+
+
+    saveLastMatch(
+        result.teamA,
+        result.teamB
+    );
+}
+
+
+function displayTeams(teamA, teamB) {
+
+    const container =
+        document.getElementById("teamsContainer");
+
+
+    container.innerHTML = `
+        <div class="team team-a">
+
+            <h2>🔵 Equipo A</h2>
+
+            ${teamA.map(playerHTML).join("")}
+
+            <div class="team-total">
+                Nivel total: ${calculateTeamLevel(teamA)}
+            </div>
+
+        </div>
+
+
+        <div class="team team-b">
+
+            <h2>🔴 Equipo B</h2>
+
+            ${teamB.map(playerHTML).join("")}
+
+            <div class="team-total">
+                Nivel total: ${calculateTeamLevel(teamB)}
+            </div>
+
+        </div>
+    `;
+}
+
+
+function playerHTML(player) {
+
+    const data =
+        playerData[player] || {};
+
+    const stars =
+        data.level
+            ? "★".repeat(Number(data.level))
+            : "";
+
+
+    return `
+        <div class="team-player">
+
+            <span>${escapeHTML(player)}</span>
+
+            ${
+                stars
+                ? `<span class="stars">${stars}</span>`
+                : ""
+            }
+
+        </div>
+    `;
+}
+
+
+function saveLastMatch(teamA, teamB) {
+
+    lastMatch = {
+
+        date: new Date().toLocaleString(
+            "es-AR",
+            {
+                dateStyle: "full",
+                timeStyle: "short"
+            }
+        ),
+
+        mode: currentMode,
+
+        teamA: [...teamA],
+
+        teamB: [...teamB]
+
     };
 
 
     saveData();
 
-    renderPlayers();
-    updateCounter();
-
-    closeModal();
-
+    renderLastMatch();
 }
 
 
-function makeTeams() {
+function renderLastMatch() {
 
-    if (selected.length !== 12) {
+    const container =
+        document.getElementById("lastMatchContent");
 
-        alert("Necesitás exactamente 12 jugadores.");
+
+    if (!lastMatch) {
+
+        container.innerHTML = `
+            <div class="empty-last">
+                Todavía no hay un armado anterior.
+            </div>
+        `;
 
         return;
     }
 
 
-    let shuffled = [...selected];
+    const modeText =
+        lastMatch.mode === "balanced"
+            ? "⚖️ Equilibrado"
+            : "🎲 Aleatorio";
 
 
-    for (let i = shuffled.length - 1; i > 0; i--) {
+    container.innerHTML = `
 
-        const j = Math.floor(Math.random() * (i + 1));
+        <div class="last-date">
+            ${escapeHTML(lastMatch.date)}
+            · ${modeText}
+        </div>
 
-        [shuffled[i], shuffled[j]] =
-            [shuffled[j], shuffled[i]];
+        <div class="last-teams">
+
+            <div class="last-team">
+
+                <h3>🔵 Equipo A</h3>
+
+                <ul>
+                    ${lastMatch.teamA
+                        .map(
+                            p => `<li>${escapeHTML(p)}</li>`
+                        )
+                        .join("")
+                    }
+                </ul>
+
+            </div>
+
+
+            <div class="last-team">
+
+                <h3>🔴 Equipo B</h3>
+
+                <ul>
+                    ${lastMatch.teamB
+                        .map(
+                            p => `<li>${escapeHTML(p)}</li>`
+                        )
+                        .join("")
+                    }
+                </ul>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+function showWarning(message, isError = true) {
+
+    const warning =
+        document.getElementById("warning");
+
+
+    warning.textContent = message;
+
+    warning.style.display = "block";
+
+
+    if (!isError) {
+
+        warning.style.background = "#183a27";
+        warning.style.borderColor = "#286b43";
+        warning.style.color = "#9ff0ba";
+
+    } else {
+
+        warning.style.background = "#432525";
+        warning.style.borderColor = "#733737";
+        warning.style.color = "#ffb5b5";
 
     }
 
 
-    const teamA = shuffled.slice(0, 6);
+    setTimeout(() => {
 
-    const teamB = shuffled.slice(6, 12);
+        warning.style.display = "none";
 
-
-    const teams = document.getElementById("teams");
-
-
-    teams.innerHTML = `
-
-        <div class="team">
-
-            <h2>🔵 Equipo 1</h2>
-
-            <ul>
-                ${teamA.map(player =>
-                    `<li>${player}</li>`
-                ).join("")}
-            </ul>
-
-        </div>
-
-
-        <div class="team">
-
-            <h2>🔴 Equipo 2</h2>
-
-            <ul>
-                ${teamB.map(player =>
-                    `<li>${player}</li>`
-                ).join("")}
-            </ul>
-
-        </div>
-
-    `;
-
-
-    window.scrollTo({
-
-        top: document.body.scrollHeight,
-
-        behavior: "smooth"
-
-    });
-
+    }, 3000);
 }
 
 
-renderPlayers();
+function escapeHTML(text) {
 
-updateCounter();
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* Cerrar modal haciendo click afuera */
+
+document.getElementById("editModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+            closeModal();
+        }
+
+    });
+
+
+/* Inicializar */
+
+renderPlayers();
+renderLastMatch();
 
 </script>
 
